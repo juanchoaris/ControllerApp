@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Controller App</string>
+    <string name="login">Iniciar Sesión</string>
+    <string name="tablas">Tablas</string>
+    <string name="localidades">Localidades</string>
+    <string name="usuario">Usuario</string>
+    <string name="identificacion">Identificación</string>
+    <string name="nombre">Nombre</string>
+    <string name="loading">Cargando...</string>
+    <string name="error">Error</string>
+</resources>
