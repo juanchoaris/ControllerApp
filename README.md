@@ -53,6 +53,38 @@ app/
 - **UI**: Material Components 1.11.0, ViewBinding
 - **Lifecycle**: ViewModel, LiveData, Lifecycle Runtime 2.7.0
 
+## 🎭 Modo Mock (Desarrollo)
+
+La aplicación incluye un **sistema de simulación de respuestas** para facilitar el desarrollo cuando el servidor tiene problemas o no está disponible.
+
+### Cómo Activar el Modo Mock
+
+1. Abrir el archivo [Constants.kt](app/src/main/java/com/example/controllerapp/utils/Constants.kt)
+2. Cambiar la constante `MOCK_MODE_ENABLED`:
+   ```kotlin
+   const val MOCK_MODE_ENABLED = true  // Activar modo mock
+   // o
+   const val MOCK_MODE_ENABLED = false // Usar servicios reales
+   ```
+
+### Respuestas Simuladas
+
+Cuando el modo mock está activo, la aplicación simula las siguientes respuestas:
+
+- **Login**: Retorna credenciales de usuario simuladas con autenticación exitosa
+- **Versión**: Retorna la versión actual (1.0.0)
+- **Esquema**: Retorna un esquema de 3 tablas de ejemplo (Clientes, Pedidos, Productos)
+- **Localidades**: Retorna 8 ciudades principales de Colombia
+
+### Ventajas
+
+✅ Desarrollo sin dependencia del servidor  
+✅ Pruebas rápidas de la UI y flujos  
+✅ Respuestas inmediatas sin latencia de red  
+✅ Datos consistentes para debugging  
+
+**Nota**: Todos los mensajes en modo mock incluyen el sufijo "(MOCK)" para identificar fácilmente cuándo se están usando datos simulados.
+
 ## 📱 Principios SOLID Implementados
 
 ### Single Responsibility Principle (SRP)

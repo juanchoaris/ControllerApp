@@ -18,7 +18,7 @@ object RetrofitClient {
     private const val TIMEOUT_SECONDS = 30L
     
     /**
-     * Crea un cliente OkHttp con logging interceptor
+     * Crea un cliente OkHttp con logging interceptor y mock interceptor
      */
     private fun createOkHttpClient(): OkHttpClient {
         val loggingInterceptor = HttpLoggingInterceptor().apply {
@@ -26,6 +26,7 @@ object RetrofitClient {
         }
         
         return OkHttpClient.Builder()
+            .addInterceptor(MockInterceptor()) // Interceptor para simular respuestas
             .addInterceptor(loggingInterceptor)
             .connectTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
             .readTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)

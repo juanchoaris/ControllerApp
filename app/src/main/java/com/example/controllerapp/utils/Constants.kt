@@ -1,13 +1,19 @@
 package com.example.controllerapp.utils
 
+import com.example.controllerapp.BuildConfig
+
 /**
  * Constantes de la aplicación
  * Principio de Single Responsibility: centraliza todas las constantes
  */
 object Constants {
     
-    // Versión local de la aplicación
-    const val LOCAL_APP_VERSION = "1.0.0"
+    // Modo Mock - Cambiar a true para usar datos simulados (útil cuando el servidor tiene problemas)
+    const val MOCK_MODE_ENABLED = true
+    
+    // Versión local de la aplicación (obtenida de BuildConfig)
+    val LOCAL_APP_VERSION: String
+        get() = BuildConfig.VERSION_NAME
     
     // Headers para autenticación
     object LoginHeaders {
