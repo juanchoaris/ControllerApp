@@ -18,6 +18,7 @@ class VersionRepository(
     
     /**
      * Obtiene la versión actual de la aplicación desde la API
+     * El servidor retorna un String simple, no un objeto JSON
      * Implementa manejo de excepciones con try/catch
      * @return Result con VersionResponse o Error
      */
@@ -34,9 +35,19 @@ class VersionRepository(
                 )
             }
             
-            // Verificar que hay datos
-            val versionResponse = response.body()
-            if (versionResponse != null) {
+            // Obtener el string de la versión
+            // El servidor retorna algo como: "100" (string con comillas)
+            val versionString = response.body()
+            
+            if (versionString != null && versionString.isNotBlank()) {
+                // Crear objeto VersionResponse a partir del string
+                // removeSurrounding("\"") quita las comillas: "100" -> 100
+                val cleanVersion = versionString.trim().removeSurrounding("\"")
+                val versionResponse = VersionResponse(
+                    versionApp = cleanVersion,
+                    mensaje = "Versión obtenida del servidor",
+                    estado = true
+                )
                 Result.Success(versionResponse)
             } else {
                 Result.Error(

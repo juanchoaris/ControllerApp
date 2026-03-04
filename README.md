@@ -79,7 +79,7 @@ La aplicación incluye un **sistema de simulación selectivo** que mockea solo l
 
 ### Respuestas Simuladas
 
-Cuando el modo mock está activo, solo estos endpoints retornan datos simulados:
+Cuando el modo mock está activo, estos endpoints retornan datos simulados:
 
 **Login (MOCK)**:
 - Usuario: pam.meredy21
@@ -97,7 +97,7 @@ Cuando el modo mock está activo, solo estos endpoints retornan datos simulados:
 
 ✅ Usa servicios reales cuando funcionan  
 ✅ Simula solo los endpoints con problemas  
-✅ Datos reales de versión y localidades  
+✅ Datos reales de versión y localidades desde el servidor  
 ✅ Permite desarrollo continuo sin bloqueos  
 ✅ Fácil migración: cuando los endpoints se reparen, solo desactiva el mock
 

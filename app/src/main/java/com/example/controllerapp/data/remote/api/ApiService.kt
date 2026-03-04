@@ -12,10 +12,11 @@ interface ApiService {
     
     /**
      * Consulta la versión actual del aplicativo
-     * @return Response con VersionResponse
+     * El servidor retorna un String simple, no un objeto JSON
+     * @return Response con String de la versión
      */
     @GET("api/ParametrosFramework/ConsultarParametrosFramework/VPStoreAppControl")
-    suspend fun getAppVersion(): Response<VersionResponse>
+    suspend fun getAppVersion(): Response<String>
     
     /**
      * Autentica un usuario en el sistema
