@@ -35,8 +35,8 @@ class LocalidadesViewModel(
             try {
                 when (val result = localidadesRepository.fetchLocalidades()) {
                     is Result.Success -> {
-                        val localidades = result.data.localidades ?: emptyList()
-                        _localidadesState.value = Result.Success(localidades)
+                        // result.data ya es la lista directamente
+                        _localidadesState.value = Result.Success(result.data)
                     }
                     is Result.Error -> {
                         _localidadesState.value = Result.Error(result.exception, result.message)

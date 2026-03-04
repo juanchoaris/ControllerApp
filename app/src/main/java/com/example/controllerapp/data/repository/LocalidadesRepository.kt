@@ -1,7 +1,7 @@
 package com.example.controllerapp.data.repository
 
 import com.example.controllerapp.data.remote.api.ApiService
-import com.example.controllerapp.data.remote.model.LocalidadesResponse
+import com.example.controllerapp.data.remote.model.LocalidadInfo
 import com.example.controllerapp.utils.Constants
 import com.example.controllerapp.utils.NetworkExceptionHandler
 import com.example.controllerapp.utils.Result
@@ -18,10 +18,11 @@ class LocalidadesRepository(
     
     /**
      * Obtiene las localidades desde la API
+     * El servidor retorna un array directo de localidades
      * Implementa manejo de excepciones con try/catch
-     * @return Result con LocalidadesResponse o Error
+     * @return Result con List de LocalidadInfo o Error
      */
-    suspend fun fetchLocalidades(): Result<LocalidadesResponse> = withContext(Dispatchers.IO) {
+    suspend fun fetchLocalidades(): Result<List<LocalidadInfo>> = withContext(Dispatchers.IO) {
         try {
             val response = apiService.getLocalidades()
             
@@ -35,13 +36,13 @@ class LocalidadesRepository(
             }
             
             // Verificar que hay datos
-            val localidadesResponse = response.body()
-            if (localidadesResponse != null && localidadesResponse.estado == true) {
-                Result.Success(localidadesResponse)
+            val localidadesList = response.body()
+            if (localidadesList != null && localidadesList.isNotEmpty()) {
+                Result.Success(localidadesList)
             } else {
                 Result.Error(
-                    Exception("Empty or invalid response"),
-                    localidadesResponse?.mensaje ?: Constants.ErrorMessages.LOCALIDADES_LOAD_ERROR
+                    Exception("Empty response"),
+                    Constants.ErrorMessages.LOCALIDADES_LOAD_ERROR
                 )
             }
             

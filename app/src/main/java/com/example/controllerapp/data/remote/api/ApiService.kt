@@ -42,8 +42,9 @@ interface ApiService {
     
     /**
      * Obtiene las localidades de recogida
-     * @return Response con LocalidadesResponse
+     * El servidor retorna un array directo, no un objeto
+     * @return Response con List de LocalidadInfo
      */
     @GET("api/ParametrosFramework/ObtenerLocalidadesRecogidas")
-    suspend fun getLocalidades(): Response<LocalidadesResponse>
+    suspend fun getLocalidades(): Response<List<LocalidadInfo>>
 }
