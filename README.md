@@ -53,37 +53,55 @@ app/
 - **UI**: Material Components 1.11.0, ViewBinding
 - **Lifecycle**: ViewModel, LiveData, Lifecycle Runtime 2.7.0
 
-## 🎭 Modo Mock (Desarrollo)
+## 🎭 Modo Mock (Híbrido)
 
-La aplicación incluye un **sistema de simulación de respuestas** para facilitar el desarrollo cuando el servidor tiene problemas o no está disponible.
+La aplicación incluye un **sistema de simulación selectivo** que mockea solo los endpoints con problemas mientras usa los servicios reales para los que funcionan correctamente.
 
-### Cómo Activar el Modo Mock
+### Configuración Actual
+
+**Endpoints MOCKEADOS** (simulados):
+- ❌ **Login** (`AuthenticaUsuarioApp`) - El servidor tiene problemas
+- ❌ **Esquema** (`ObtenerEsquema`) - El servidor tiene problemas
+
+**Endpoints REALES** (conectan al servidor):
+- ✅ **Versión** (`ConsultarParametrosFramework/VPStoreAppControl`) - Funciona correctamente
+- ✅ **Localidades** (`ObtenerLocalidadesRecogidas`) - Funciona correctamente
+
+### Cómo Activar/Desactivar el Modo Mock
 
 1. Abrir el archivo [Constants.kt](app/src/main/java/com/example/controllerapp/utils/Constants.kt)
 2. Cambiar la constante `MOCK_MODE_ENABLED`:
    ```kotlin
-   const val MOCK_MODE_ENABLED = true  // Activar modo mock
+   const val MOCK_MODE_ENABLED = true  // Mock solo endpoints con problemas
    // o
-   const val MOCK_MODE_ENABLED = false // Usar servicios reales
+   const val MOCK_MODE_ENABLED = false // Intentar usar todos los servicios reales
    ```
 
 ### Respuestas Simuladas
 
-Cuando el modo mock está activo, la aplicación simula las siguientes respuestas:
+Cuando el modo mock está activo, solo estos endpoints retornan datos simulados:
 
-- **Login**: Retorna credenciales de usuario simuladas con autenticación exitosa
-- **Versión**: Retorna la versión actual (1.0.0)
-- **Esquema**: Retorna un esquema de 3 tablas de ejemplo (Clientes, Pedidos, Productos)
-- **Localidades**: Retorna 8 ciudades principales de Colombia
+**Login (MOCK)**:
+- Usuario: pam.meredy21
+- Identificación: 987204545  
+- Nombre: MEREDY PAOLA ACERO MULCUE
+- Token simulado
+- Mensaje incluye "(MOCK)"
 
-### Ventajas
+**Esquema (MOCK)**:
+- 3 tablas de ejemplo: Clientes, Pedidos, Productos
+- Con campos apropiados para cada tabla
+- Mensaje incluye "(MOCK)"
 
-✅ Desarrollo sin dependencia del servidor  
-✅ Pruebas rápidas de la UI y flujos  
-✅ Respuestas inmediatas sin latencia de red  
-✅ Datos consistentes para debugging  
+### Ventajas del Modo Híbrido
 
-**Nota**: Todos los mensajes en modo mock incluyen el sufijo "(MOCK)" para identificar fácilmente cuándo se están usando datos simulados.
+✅ Usa servicios reales cuando funcionan  
+✅ Simula solo los endpoints con problemas  
+✅ Datos reales de versión y localidades  
+✅ Permite desarrollo continuo sin bloqueos  
+✅ Fácil migración: cuando los endpoints se reparen, solo desactiva el mock
+
+**Nota**: Los mensajes en modo mock incluyen el sufijo "(MOCK)" para identificar fácilmente qué datos son simulados y cuáles vienen del servidor real.
 
 ## 📱 Principios SOLID Implementados
 

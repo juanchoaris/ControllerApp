@@ -9,7 +9,13 @@ import okhttp3.ResponseBody.Companion.toResponseBody
 
 /**
  * Interceptor para simular respuestas de la API cuando el modo mock está habilitado
- * Útil para desarrollo y testing cuando el servidor tiene problemas
+ * Solo simula los endpoints que NO funcionan:
+ * - AuthenticaUsuarioApp (Login) - endpoint con problemas
+ * - ObtenerEsquema (Esquema) - endpoint con problemas
+ * 
+ * Los endpoints funcionales se conectan al servidor real:
+ * - ConsultarParametrosFramework (Versión) - endpoint funcional
+ * - ObtenerLocalidadesRecogidas (Localidades) - endpoint funcional
  */
 class MockInterceptor : Interceptor {
     
@@ -22,22 +28,21 @@ class MockInterceptor : Interceptor {
         val request = chain.request()
         val path = request.url.encodedPath
         
-        // Simular respuestas según el endpoint
+        // Solo simular respuestas para los endpoints que NO funcionan
         return when {
+            // Endpoints que NO funcionan - usar MOCK
             path.contains("AuthenticaUsuarioApp") -> {
                 createMockLoginResponse(chain)
-            }
-            path.contains("ConsultarParametrosFramework") -> {
-                createMockVersionResponse(chain)
             }
             path.contains("ObtenerEsquema") -> {
                 createMockSchemaResponse(chain)
             }
-            path.contains("ObtenerLocalidadesRecogidas") -> {
-                createMockLocalidadesResponse(chain)
-            }
+            
+            // Endpoints que SÍ funcionan - llamar al servidor real
+            // - ConsultarParametrosFramework (versión)
+            // - ObtenerLocalidadesRecogidas (localidades)
             else -> {
-                // Para endpoints no mockeados, hacer la llamada real
+                // Hacer la llamada real al servidor
                 chain.proceed(request)
             }
         }
@@ -54,21 +59,6 @@ class MockInterceptor : Interceptor {
                 "Nombre": "MEREDY PAOLA ACERO MULCUE",
                 "Token": "mock-token-12345-67890-abcdef",
                 "Mensaje": "Autenticación exitosa (MOCK)",
-                "Estado": true
-            }
-        """.trimIndent()
-        
-        return createMockResponse(chain, mockJson)
-    }
-    
-    /**
-     * Crea respuesta mock para versión
-     */
-    private fun createMockVersionResponse(chain: Interceptor.Chain): Response {
-        val mockJson = """
-            {
-                "VersionApp": "1.0.0",
-                "Mensaje": "Versión actual (MOCK)",
                 "Estado": true
             }
         """.trimIndent()
@@ -155,70 +145,6 @@ class MockInterceptor : Interceptor {
                     }
                 ],
                 "Mensaje": "Esquema obtenido exitosamente (MOCK)",
-                "Estado": true
-            }
-        """.trimIndent()
-        
-        return createMockResponse(chain, mockJson)
-    }
-    
-    /**
-     * Crea respuesta mock para localidades
-     */
-    private fun createMockLocalidadesResponse(chain: Interceptor.Chain): Response {
-        val mockJson = """
-            {
-                "Localidades": [
-                    {
-                        "IdLocalidad": 1,
-                        "AbreviacionCiudad": "BOG",
-                        "NombreCompleto": "Bogotá D.C.",
-                        "CodigoDane": "11001"
-                    },
-                    {
-                        "IdLocalidad": 2,
-                        "AbreviacionCiudad": "MED",
-                        "NombreCompleto": "Medellín",
-                        "CodigoDane": "05001"
-                    },
-                    {
-                        "IdLocalidad": 3,
-                        "AbreviacionCiudad": "CAL",
-                        "NombreCompleto": "Cali",
-                        "CodigoDane": "76001"
-                    },
-                    {
-                        "IdLocalidad": 4,
-                        "AbreviacionCiudad": "BAQ",
-                        "NombreCompleto": "Barranquilla",
-                        "CodigoDane": "08001"
-                    },
-                    {
-                        "IdLocalidad": 5,
-                        "AbreviacionCiudad": "CTG",
-                        "NombreCompleto": "Cartagena",
-                        "CodigoDane": "13001"
-                    },
-                    {
-                        "IdLocalidad": 6,
-                        "AbreviacionCiudad": "BUC",
-                        "NombreCompleto": "Bucaramanga",
-                        "CodigoDane": "68001"
-                    },
-                    {
-                        "IdLocalidad": 7,
-                        "AbreviacionCiudad": "PER",
-                        "NombreCompleto": "Pereira",
-                        "CodigoDane": "66001"
-                    },
-                    {
-                        "IdLocalidad": 8,
-                        "AbreviacionCiudad": "CUC",
-                        "NombreCompleto": "Cúcuta",
-                        "CodigoDane": "54001"
-                    }
-                ],
-                "Mensaje": "Localidades obtenidas exitosamente (MOCK)",
                 "Estado": true
             }
         """.trimIndent()
